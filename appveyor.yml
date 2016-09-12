@@ -24,6 +24,9 @@ environment:
     MINGW_ARCHIVE: x86_64-4.9.2-release-win32-seh-rt_v4-rev4.7z
     WINDBG_DIR: '%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\x64'
 
+init:
+- dir c:\
+
 install:
 - powershell -executionPolicy bypass -file cmake-3.6.2.ps1
 - if not exist "%MINGW_ARCHIVE%" appveyor DownloadFile "%MINGW_URL%" -FileName "%MINGW_ARCHIVE%"
