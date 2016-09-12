@@ -1,5 +1,7 @@
 # See http://www.appveyor.com/docs/appveyor-yml
 
+image: test-vs2015-hyperv
+
 version: '{build}'
 
 branches:
@@ -57,8 +59,7 @@ after_build:
 - if "%MINGW_DIR%"=="mingw64" python tests\apps\test.py build\mingw\bin\catchsegv.exe build\msvc32\Debug build\msvc64\Debug
 - cmake --build build\mingw --use-stderr --target package
 
-on_success:
-- if "%ENABLE_COVERAGE%"=="yes" C:\Python27\Scripts\coveralls --include src --gcov-options="-lp"
+test: off
 
 artifacts:
 - path: build\mingw\drmingw-*.7z
