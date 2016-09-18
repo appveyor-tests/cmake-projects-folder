@@ -1,7 +1,4 @@
 # See http://www.appveyor.com/docs/appveyor-yml
-
-image: test-vs2015-hyperv
-
 version: '{build}'
 
 branches:
