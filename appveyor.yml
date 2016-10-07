@@ -1,5 +1,4 @@
 # See http://www.appveyor.com/docs/appveyor-yml
-
 version: '{build}'
 
 branches:
@@ -21,12 +20,12 @@ environment:
     MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/4.9.2/threads-win32/seh/x86_64-4.9.2-release-win32-seh-rt_v4-rev4.7z/download
     MINGW_ARCHIVE: x86_64-4.9.2-release-win32-seh-rt_v4-rev4.7z
     WINDBG_DIR: '%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\x64'
-  - MINGW_DIR: mingw32
-    MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-win32/dwarf/i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z/download
-    MINGW_ARCHIVE: i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z
-    WINDBG_DIR: '%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\x86'
+
+init:
+- dir c:\
 
 install:
+- powershell -executionPolicy bypass -file cmake-3.6.2.ps1
 - if not exist "%MINGW_ARCHIVE%" appveyor DownloadFile "%MINGW_URL%" -FileName "%MINGW_ARCHIVE%"
 - 7z x -y "%MINGW_ARCHIVE%" > nul
 - python -m ensurepip
@@ -60,8 +59,7 @@ after_build:
 - if "%MINGW_DIR%"=="mingw64" python tests\apps\test.py build\mingw\bin\catchsegv.exe build\msvc32\Debug build\msvc64\Debug
 - cmake --build build\mingw --use-stderr --target package
 
-on_success:
-- if "%ENABLE_COVERAGE%"=="yes" C:\Python27\Scripts\coveralls --include src --gcov-options="-lp"
+test: off
 
 artifacts:
 - path: build\mingw\drmingw-*.7z
